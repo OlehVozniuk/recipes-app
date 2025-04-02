@@ -3,8 +3,8 @@ TODO:
 SERVER
 1.Controller 
 2.Models
-3.Create github repo and deploy project on git(to avoid any bad cases)
-4.Figure out about U and M on files in the project
+3.Create github repo and deploy project on git(to avoid any bad cases) ✅
+4.Figure out about U and M on files in the project ✅
 //Permanent
 MAIN IDEA
 1.To make authentication
