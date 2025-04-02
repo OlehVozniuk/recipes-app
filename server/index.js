@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
-const recipeRoutes = require("./routes/recipes");
+const recipeRoutes = require("./routes/recipesRouter");
 
 // ✅ CORS (ДОБАВЛЯЄМО ПЕРШИМИ!)
 app.use(
