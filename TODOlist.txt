@@ -7,6 +7,9 @@ SERVER
 4.Figure out about U and M on files in the project ✅
 --------------------------------------------------------
 5. Make validation
+a. Repeated names
+b. Char validation
+c. Cover an image et cetera 
 6. Set ingridients
 //Permanent
 MAIN IDEA

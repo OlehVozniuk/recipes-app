@@ -2,11 +2,32 @@ const mongoose = require("mongoose");
 
 const RecipeSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    ingredients: { type: [String], required: true },
-    instructions: { type: String, required: true },
-    image: { type: String, required: true }, // URL зображення
+    name: {
+      type: String,
+      required: [true, "A recipe must have a name"],
+      unique: true,
+      trim: true,
+      maxlength: [
+        40,
+        "A recipe name must have less or equal then 30 characters",
+      ],
+      minlength: [5, "A recipe name must have more or equal then 5 characters"],
+    },
+    description: {
+      type: String,
+      required: [true, "A recipe must have a description"],
+    },
+    ingredients: {
+      type: [String],
+      required: [true, "A recipe must have ingredients"],
+      unique: true,
+      minlength: [1, "A recipe must have more or equal then 1 ingredient"],
+    },
+    instructions: {
+      type: String,
+      required: [true, "A recipe must have instructions"],
+    },
+    image: { type: String, required: [true, "A recipe must have an image"] }, // URL зображення
     createdAt: { type: Date, default: Date.now },
   },
   { versionKey: false }
