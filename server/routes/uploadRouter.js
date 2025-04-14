@@ -1,7 +1,7 @@
 // routes/uploadRouter.js
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
+
 const router = express.Router();
 
 // Налаштування зберігання
@@ -19,7 +19,7 @@ const upload = multer({ storage });
 // Завантаження зображення
 router.post("/", upload.single("image"), (req, res) => {
   const imageUrl = `http://localhost:5001/uploads/${req.file.filename}`;
-  res.json({ imageUrl }); // Відправляємо URL завантаженого зображення
+  res.json({ imageUrl });
 });
 
 module.exports = router;

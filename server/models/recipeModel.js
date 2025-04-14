@@ -20,9 +20,9 @@ const RecipeSchema = new mongoose.Schema(
     ingredients: {
       type: [String],
       required: [true, "A recipe must have ingredients"],
-      unique: true,
-      minlength: [1, "A recipe must have more or equal then 1 ingredient"],
+      minlength: [1, "A recipe must have more or equal than 1 ingredient"],
     },
+
     instructions: {
       type: String,
       required: [true, "A recipe must have instructions"],
@@ -31,6 +31,6 @@ const RecipeSchema = new mongoose.Schema(
     createdAt: { type: Date, default: Date.now },
   },
   { versionKey: false }
-); // Прибирає __v
+);
 
 module.exports = mongoose.model("Recipe", RecipeSchema);
