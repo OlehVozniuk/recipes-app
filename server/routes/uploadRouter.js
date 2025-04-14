@@ -1,25 +1,22 @@
-// routes/uploadRouter.js
 const express = require("express");
 const multer = require("multer");
+const { uploadImage } = require("../controllers/uploadController");
 
 const router = express.Router();
 
 // Налаштування зберігання
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Папка для зберігання файлів
+    cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`); // Унікальне ім'я файлу
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
 const upload = multer({ storage });
 
 // Завантаження зображення
-router.post("/", upload.single("image"), (req, res) => {
-  const imageUrl = `http://localhost:5001/uploads/${req.file.filename}`;
-  res.json({ imageUrl });
-});
+router.post("/", upload.single("image"), uploadImage);
 
 module.exports = router;

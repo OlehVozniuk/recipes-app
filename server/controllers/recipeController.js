@@ -1,19 +1,16 @@
-//TODO: controller for recipe, GET, POST, PUT, DELETE
 const path = require("path");
 const fs = require("fs");
 const Recipe = require("../models/recipeModel");
 
-// Отримати всі рецепти
 exports.getAllRecipes = async (req, res) => {
   try {
     const recipes = await Recipe.find();
-    res.status(200).json(recipes); // Повертаємо масив рецептів
+    res.status(200).json(recipes);
   } catch (err) {
     res.status(500).json({ status: "fail", message: err.message });
   }
 };
 
-// Отримати один рецепт за ID
 exports.getRecipe = async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
@@ -28,7 +25,6 @@ exports.getRecipe = async (req, res) => {
   }
 };
 
-// Створити новий рецепт
 exports.createRecipe = async (req, res) => {
   try {
     const newRecipe = await Recipe.create(req.body);
@@ -38,7 +34,6 @@ exports.createRecipe = async (req, res) => {
   }
 };
 
-// Оновити рецепт
 exports.updateRecipe = async (req, res) => {
   try {
     const existingRecipe = await Recipe.findById(req.params.id);
@@ -84,7 +79,6 @@ exports.updateRecipe = async (req, res) => {
   }
 };
 
-// Видалити рецепт
 exports.deleteRecipe = async (req, res) => {
   try {
     const recipe = await Recipe.findByIdAndDelete(req.params.id);

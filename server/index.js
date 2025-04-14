@@ -8,34 +8,22 @@ const recipeRoutes = require("./routes/recipesRouter");
 
 const uploadRoutes = require("./routes/uploadRouter");
 
-// ✅ CORS (ДОБАВЛЯЄМО ПЕРШИМИ!)
 app.use(
   cors({
-    origin: "http://localhost:3000", // Дозволяємо React підключатись
+    origin: "http://localhost:3000",
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
-// ✅ Додаємо ще заголовки (запасний варіант)
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
-
-// ✅ Парсимо JSON (ОБОВ'ЯЗКОВО)
 app.use(express.json());
 
-// ✅ Підключаємо маршрути
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/upload", uploadRoutes);
 
-// Додаємо папку з файлами
 app.use("/uploads", express.static("uploads"));
-// ✅ Підключаємо MongoDB
+
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
