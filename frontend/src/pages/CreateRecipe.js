@@ -79,6 +79,7 @@ const CreateRecipe = () => {
           placeholder="Інгредієнти"
           className="w-full border p-2"
         />
+
         <textarea
           name="instructions"
           onChange={handleChange}

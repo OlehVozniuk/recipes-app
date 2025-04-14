@@ -7,12 +7,15 @@ const Header = () => {
         <Link to="/" className="text-2xl font-bold">
           Recipefy
         </Link>
-        <nav className="space-x-4">
+        <nav className="space-x-4 flex items-center">
+          <Link
+            to="/recipes/new"
+            className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200"
+          >
+            + Add Recipe
+          </Link>
           <Link to="/" className="hover:underline">
             Home
-          </Link>
-          <Link to="/recipes/new" className="hover:underline">
-            Add Recipe
           </Link>
           <Link to="/about" className="hover:underline">
             About
