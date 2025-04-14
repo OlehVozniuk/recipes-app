@@ -6,6 +6,8 @@ const cors = require("cors");
 const app = express();
 const recipeRoutes = require("./routes/recipesRouter");
 
+const uploadRoutes = require("./routes/uploadRouter");
+
 // ✅ CORS (ДОБАВЛЯЄМО ПЕРШИМИ!)
 app.use(
   cors({
@@ -29,7 +31,10 @@ app.use(express.json());
 
 // ✅ Підключаємо маршрути
 app.use("/api/recipes", recipeRoutes);
+app.use("/api/upload", uploadRoutes);
 
+// Додаємо папку з файлами
+app.use("/uploads", express.static("uploads"));
 // ✅ Підключаємо MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
