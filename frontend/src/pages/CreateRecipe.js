@@ -10,7 +10,7 @@ const CreateRecipe = () => {
     instructions: "",
     image: null,
   });
-  const [loading, setLoading] = useState(false); // Статус завантаження
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -29,9 +29,8 @@ const CreateRecipe = () => {
       return;
     }
 
-    setLoading(true); // Включаємо статус завантаження
+    setLoading(true);
     try {
-      // 🔼 Крок 1: Завантажити зображення
       const imageData = new FormData();
       imageData.append("image", form.image);
       const uploadRes = await axios.post(
@@ -40,19 +39,17 @@ const CreateRecipe = () => {
       );
       const imageUrl = uploadRes.data.imageUrl;
 
-      // 🔼 Крок 2: Створити рецепт
       await axios.post("http://localhost:5001/api/recipes", {
         ...form,
         image: imageUrl,
       });
 
-      // Повертаємось на головну після успішного створення
       navigate("/");
     } catch (err) {
       console.error("Помилка при створенні рецепту", err);
       alert("Сталася помилка при створенні рецепту. Спробуйте ще раз!");
     } finally {
-      setLoading(false); // Вимикаємо статус завантаження
+      setLoading(false);
     }
   };
 
@@ -100,10 +97,9 @@ const CreateRecipe = () => {
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded"
-          disabled={loading} // Вимкнути кнопку під час завантаження
+          disabled={loading}
         >
-          {loading ? "Завантаження..." : "Зберегти"}{" "}
-          {/* Покажемо статус завантаження */}
+          {loading ? "Завантаження..." : "Зберегти"} {}
         </button>
       </form>
     </div>
