@@ -6,7 +6,7 @@ const CreateRecipe = () => {
   const [form, setForm] = useState({
     name: "",
     description: "",
-    ingredients: "",
+    ingredients: [],
     instructions: "",
     image: null,
   });
@@ -74,10 +74,15 @@ const CreateRecipe = () => {
         />
         <textarea
           name="ingredients"
-          onChange={handleChange}
-          value={form.ingredients}
-          placeholder="Інгредієнти"
-          className="w-full border p-2"
+          value={form.ingredients.join(", ")}
+          onChange={(e) =>
+            setForm((prev) => ({
+              ...prev,
+              ingredients: e.target.value.split(",").map((i) => i.trim()),
+            }))
+          }
+          placeholder="Інгредієнти (через кому)"
+          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-500"
         />
 
         <textarea

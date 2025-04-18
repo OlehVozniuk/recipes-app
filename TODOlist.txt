@@ -13,7 +13,7 @@ c. Cover an image et cetera ✅
 6. Set ingridients ✅
 --------------------------------------------------------
 7. FIXME: bug when validation of recipe is denied but img upload anyway on server
-8. FIXME: with ingridients when creating new recipe
+8. FIXME: with ingridients when creating new recipe✅
 //Permanent
 MAIN IDEA
 1.To make authentication
