@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
 //name, email, photo, password, passwordConfirm
 const UserSchema = new mongoose.Schema(
   {
@@ -21,11 +22,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "A user must have a password"],
       minlength: 8,
-      select: false, // Exclude password from query results
+      // select: false, // Exclude password from query results
     },
     passwordConfirm: {
       type: String,
       required: [true, "A user must confirm the password"],
+      select: false,
       validate: {
         // This only works on CREATE and SAVE!!!
         validator: function (el) {
@@ -37,5 +39,15 @@ const UserSchema = new mongoose.Schema(
   },
   { versionKey: false }
 );
+UserSchema.pre("save", async function (next) {
+  // Only run this function if password was actually modified
+  if (!this.isModified("password")) return next();
 
+  // Hash the password with cost of 12
+  this.password = await bcrypt.hash(this.password, 12);
+
+  // Delete passwordConfirm field
+  this.passwordConfirm = undefined;
+  next();
+});
 module.exports = mongoose.model("User", UserSchema);
