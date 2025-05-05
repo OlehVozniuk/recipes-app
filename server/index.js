@@ -4,9 +4,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
-const recipeRoutes = require("./routes/recipesRouter");
+const recipeRouter = require("./routes/recipesRouter");
 const userRouter = require("./routes/userRouter");
-const uploadRoutes = require("./routes/uploadRouter");
+const uploadRouter = require("./routes/uploadRouter");
 
 app.use(
   cors({
@@ -19,8 +19,8 @@ app.use(
 
 app.use(express.json());
 
-app.use("/api/recipes", recipeRoutes);
-app.use("/api/upload", uploadRoutes);
+app.use("/api/recipes", recipeRouter);
+app.use("/api/upload", uploadRouter);
 app.use("/api/users", userRouter);
 
 app.use("/uploads", express.static("uploads"));
