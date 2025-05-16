@@ -6,22 +6,28 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import EditRecipe from "./pages/EditRecipe";
 import About from "./pages/About";
+import { AuthProvider } from "./context/AuthContext"; // додай це
+import Login from "./pages/Login"; // майбутні сторінки
+import Signup from "./pages/Signup";
 
 const App = () => {
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/edit/:id" element={<EditRecipe />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/recipes/:id" element={<RecipePage />} />
-        <Route path="/about" element={<About />} /> {/* отут про нас */}
-        <Route path="/recipes/new" element={<CreateRecipe />} />{" "}
-        {/* нова сторінка */}
-        <Route path="*" element={<h1>404 - Page Not Found</h1>} />
-      </Routes>
-      <Footer />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/recipes/:id" element={<RecipePage />} />
+          <Route path="/recipes/new" element={<CreateRecipe />} />
+          <Route path="/edit/:id" element={<EditRecipe />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+        </Routes>
+        <Footer />
+      </Router>
+    </AuthProvider>
   );
 };
 
