@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "A user must have a password"],
       minlength: 8,
-      // select: false, // Exclude password from query results
+      select: false, // Exclude password from query results
     },
     passwordConfirm: {
       type: String,
