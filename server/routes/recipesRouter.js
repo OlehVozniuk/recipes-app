@@ -13,7 +13,11 @@ router
   .get(recipeController.getRecipe)
   .put(authController.protect, recipeController.updateRecipe)
   .patch(authController.protect, recipeController.updateRecipe)
-  .delete(authController.protect, recipeController.deleteRecipe);
+  .delete(
+    authController.protect,
+    authController.restrictTo("admin"),
+    recipeController.deleteRecipe
+  );
 
 // router.get("/", recipeController.getAllRecipes);
 // router.get("/:id", recipeController.getRecipe);

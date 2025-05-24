@@ -16,6 +16,7 @@ exports.signup = async (req, res) => {
     const newUser = await User.create({
       name: req.body.name,
       email: req.body.email,
+      role: req.body.role || "user", // Default role is 'user'
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
     });
@@ -58,9 +59,13 @@ exports.login = async (req, res) => {
 
     const token = signToken(user._id);
 
+    // Прибрати пароль перед відправкою
+    user.password = undefined;
+
     res.status(200).json({
       status: "success",
       token,
+      user, // ⬅️ додаємо користувача у відповідь
     });
   } catch (err) {
     res.status(500).json({
@@ -111,3 +116,14 @@ exports.protect = catchAsync(async (req, res, next) => {
   req.user = currentUser;
   next();
 });
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // roles is an array ['admin', 'user']
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError("You do not have permission to perform this action", 403)
+      );
+    }
+    next();
+  };
+};

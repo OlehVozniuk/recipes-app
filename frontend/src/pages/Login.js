@@ -21,8 +21,8 @@ const Login = () => {
 
       const data = await res.json();
 
-      if (data.token) {
-        login(data.token);
+      if (data.token && data.user) {
+        login(data.token, data.user);
         navigate("/");
       } else {
         setError(data.message || "Login failed");

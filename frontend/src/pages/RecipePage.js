@@ -1,12 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext"; // ⬅ Додаємо контекст
+import { AuthContext } from "../context/AuthContext";
 
 const RecipePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
-  const { token } = useContext(AuthContext); // ⬅ Отримуємо токен
+  const { token, user } = useContext(AuthContext); // ⬅ Отримуємо token і user з контексту
 
   useEffect(() => {
     fetch(`http://localhost:5001/api/recipes/${id}`)
@@ -25,9 +25,14 @@ const RecipePage = () => {
       const res = await fetch(`http://localhost:5001/api/recipes/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`, // ⬅ Авторизація
+          Authorization: `Bearer ${token}`,
         },
       });
+
+      if (res.status === 403) {
+        alert("У вас немає прав для видалення цього рецепта!");
+        return;
+      }
 
       if (res.ok) {
         alert("Рецепт видалено успішно!");
@@ -38,7 +43,7 @@ const RecipePage = () => {
       }
     } catch (err) {
       console.error("Помилка:", err);
-      alert("Помилка при видаленні рецепта");
+      alert(err.message || "Помилка при видаленні рецепта");
     }
   };
 
@@ -57,7 +62,12 @@ const RecipePage = () => {
           </button>
           <button
             onClick={handleDelete}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+            className={`px-4 py-2 rounded text-white ${
+              user?.role === "admin"
+                ? "bg-red-500 hover:bg-red-600"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
+            disabled={user?.role !== "admin"}
           >
             Видалити
           </button>
