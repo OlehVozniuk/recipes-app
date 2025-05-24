@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext"; // ⬅ Додаємо
 
 const CreateRecipe = () => {
   const [form, setForm] = useState({
@@ -12,6 +13,7 @@ const CreateRecipe = () => {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { token } = useContext(AuthContext); // ⬅ Отримуємо токен
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -33,16 +35,31 @@ const CreateRecipe = () => {
     try {
       const imageData = new FormData();
       imageData.append("image", form.image);
+
       const uploadRes = await axios.post(
         "http://localhost:5001/api/upload",
-        imageData
+        imageData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // ⬅ Авторизація
+          },
+        }
       );
+
       const imageUrl = uploadRes.data.imageUrl;
 
-      await axios.post("http://localhost:5001/api/recipes", {
-        ...form,
-        image: imageUrl,
-      });
+      await axios.post(
+        "http://localhost:5001/api/recipes",
+        {
+          ...form,
+          image: imageUrl,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // ⬅ Авторизація
+          },
+        }
+      );
 
       navigate("/");
     } catch (err) {
@@ -105,7 +122,7 @@ const CreateRecipe = () => {
           className="bg-blue-600 text-white px-4 py-2 rounded"
           disabled={loading}
         >
-          {loading ? "Завантаження..." : "Зберегти"} {}
+          {loading ? "Завантаження..." : "Зберегти"}
         </button>
       </form>
     </div>

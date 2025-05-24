@@ -16,6 +16,7 @@ c. Cover an image et cetera ✅
 8. FIXED: with ingridients when creating new recipe✅
 9. FIXME: handle and write errors tokens
 10. FIXME: create login in postman with not hidden token
+11. TODO: implement change password after in user auth
 //Permanent
 MAIN IDEA
 1.To make authentication

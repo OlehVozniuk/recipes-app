@@ -6,14 +6,14 @@ const authController = require("../controllers/authController");
 router
   .route("/")
   .get(authController.protect, recipeController.getAllRecipes)
-  .post(recipeController.createRecipe);
+  .post(authController.protect, recipeController.createRecipe);
 
 router
   .route("/:id")
   .get(recipeController.getRecipe)
-  .put(recipeController.updateRecipe)
-  .patch(recipeController.updateRecipe)
-  .delete(recipeController.deleteRecipe);
+  .put(authController.protect, recipeController.updateRecipe)
+  .patch(authController.protect, recipeController.updateRecipe)
+  .delete(authController.protect, recipeController.deleteRecipe);
 
 // router.get("/", recipeController.getAllRecipes);
 // router.get("/:id", recipeController.getRecipe);

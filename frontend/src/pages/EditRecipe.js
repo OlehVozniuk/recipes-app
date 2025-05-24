@@ -1,10 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext"; // Додаємо
 
 const EditRecipe = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { token } = useContext(AuthContext); // 🔑 Отримуємо токен
+
   const [recipe, setRecipe] = useState({
     name: "",
     description: "",
@@ -15,12 +18,35 @@ const EditRecipe = () => {
   const [newImage, setNewImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
+  // ✅ Fetch з авторизацією
   useEffect(() => {
-    fetch(`http://localhost:5001/api/recipes/${id}`)
-      .then((res) => res.json())
-      .then((data) => setRecipe(data))
-      .catch((err) => console.error("Error fetching recipe:", err));
-  }, [id]);
+    const fetchRecipe = async () => {
+      try {
+        const res = await fetch(`http://localhost:5001/api/recipes/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            navigate("/login");
+            return;
+          }
+          throw new Error("Помилка при отриманні рецепта");
+        }
+
+        const data = await res.json();
+        setRecipe(data);
+      } catch (err) {
+        console.error("Error fetching recipe:", err);
+      }
+    };
+
+    if (token) {
+      fetchRecipe();
+    }
+  }, [id, token, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +57,6 @@ const EditRecipe = () => {
     const file = e.target.files[0];
     setNewImage(file);
 
-    // Створюємо прев'ю для відображення
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -48,21 +73,27 @@ const EditRecipe = () => {
     try {
       let imageUrl = recipe.image;
 
-      // Якщо вибране нове зображення — завантаж його
       if (newImage) {
         const formData = new FormData();
         formData.append("image", newImage);
         const uploadRes = await axios.post(
           "http://localhost:5001/api/upload",
-          formData
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // ⬅ тут токен!
+            },
+          }
         );
         imageUrl = uploadRes.data.imageUrl;
       }
 
-      // Оновлюємо рецепт
       const res = await fetch(`http://localhost:5001/api/recipes/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // ⬅ тут токен!
+        },
         body: JSON.stringify({ ...recipe, image: imageUrl }),
       });
 
@@ -118,7 +149,6 @@ const EditRecipe = () => {
           className="w-full p-2 border rounded"
         />
 
-        {/* Поточне зображення */}
         {recipe.image ? (
           <div>
             <p className="font-semibold">Поточне зображення:</p>
@@ -132,7 +162,6 @@ const EditRecipe = () => {
           <p className="text-gray-500 italic">Зображення не додано</p>
         )}
 
-        {/* Завантажити нове */}
         <input
           type="file"
           name="image"
@@ -141,7 +170,6 @@ const EditRecipe = () => {
           accept="image/*"
         />
 
-        {/* Прев’ю нового зображення */}
         {previewImage && (
           <div>
             <p className="font-semibold">Нове зображення:</p>

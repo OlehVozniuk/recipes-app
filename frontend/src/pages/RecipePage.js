@@ -1,10 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext"; // ⬅ Додаємо контекст
 
 const RecipePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
+  const { token } = useContext(AuthContext); // ⬅ Отримуємо токен
 
   useEffect(() => {
     fetch(`http://localhost:5001/api/recipes/${id}`)
@@ -22,6 +24,9 @@ const RecipePage = () => {
     try {
       const res = await fetch(`http://localhost:5001/api/recipes/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`, // ⬅ Авторизація
+        },
       });
 
       if (res.ok) {
