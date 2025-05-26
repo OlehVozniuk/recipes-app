@@ -11,7 +11,7 @@ const uploadRouter = require("./routes/uploadRouter");
 app.use(
   cors({
     origin: "http://localhost:3000",
-    methods: "GET,POST,PUT,DELETE",
+    methods: "GET,POST,PATCH,PUT,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })

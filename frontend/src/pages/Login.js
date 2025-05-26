@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // додали Link
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -59,6 +59,16 @@ const Login = () => {
         >
           Вхід
         </button>
+
+        {/* 🔽 Додали кнопку посилання */}
+        <div className="text-center">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Забули пароль?
+          </Link>
+        </div>
       </form>
     </div>
   );
