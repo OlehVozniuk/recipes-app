@@ -13,17 +13,13 @@ router.patch(
   authController.protect,
   authController.updatePassword
 );
-router.patch("/updateMe", authController.protect, authController.updateMe);
+router.patch("/updateMe", authController.protect, userController.updateMe);
 
-router
-  .route("/")
-  .get(userController.getAllUsers)
-  .post(userController.createUser);
+router.route("/").get(userController.getAllUsers);
 
 router
   .route("/:id")
   .get(userController.getUser)
-  .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
 module.exports = router;
