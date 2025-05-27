@@ -46,7 +46,10 @@ const UserSchema = new mongoose.Schema(
     passwordResetToken: String,
     passwordResetExpires: Date,
   },
-  { versionKey: false }
+  {
+    versionKey: false,
+    timestamps: true, // 🟢 Додано це
+  }
 );
 UserSchema.pre("save", async function (next) {
   // Only run this function if password was actually modified
