@@ -58,18 +58,11 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteUser = async (req, res) => {
-  try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
 
-    if (!deletedUser) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "Користувача не знайдено" });
-    }
-
-    res.status(204).json({ status: "success", data: null });
-  } catch (err) {
-    res.status(500).json({ status: "fail", message: err.message });
-  }
-};
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+});

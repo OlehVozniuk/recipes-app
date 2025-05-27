@@ -10,7 +10,6 @@ const Settings = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  // Розділені повідомлення
   const [profileMessage, setProfileMessage] = useState(null);
   const [profileError, setProfileError] = useState(null);
   const [passwordMessage, setPasswordMessage] = useState(null);
@@ -37,7 +36,6 @@ const Settings = () => {
         throw new Error(data.message || "Не вдалося оновити профіль");
       }
 
-      // Оновлення user у контексті й localStorage
       setUser(data.data.user);
       localStorage.setItem("user", JSON.stringify(data.data.user));
 
@@ -88,6 +86,34 @@ const Settings = () => {
       setPasswordConfirm("");
     } catch (err) {
       setPasswordError(err.message);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm(
+      "Ви впевнені, що хочете видалити свій акаунт? Цю дію неможливо скасувати."
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch("http://localhost:5001/api/users/deleteMe", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Не вдалося видалити акаунт");
+      }
+
+      setUser(null);
+      localStorage.removeItem("user");
+
+      window.location.href = "/";
+    } catch (err) {
+      alert(err.message);
     }
   };
 
@@ -177,6 +203,20 @@ const Settings = () => {
         {passwordMessage && <p className="text-green-600">{passwordMessage}</p>}
         {passwordError && <p className="text-red-600">{passwordError}</p>}
       </form>
+
+      <hr className="my-6" />
+
+      <div className="mt-8">
+        <h3 className="text-xl font-semibold mb-4 text-red-600">
+          Видалити акаунт
+        </h3>
+        <button
+          onClick={handleDeleteAccount}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        >
+          Видалити акаунт
+        </button>
+      </div>
     </div>
   );
 };
