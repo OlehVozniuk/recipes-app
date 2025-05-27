@@ -220,3 +220,30 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // 4) Log user in, send JWT
   createSendToken(user, 200, res);
 });
+exports.updateMe = catchAsync(async (req, res, next) => {
+  // 1) Заборонити оновлення паролю через цей маршрут
+  if (req.body.password || req.body.passwordConfirm) {
+    return next(
+      new AppError(
+        "This route is not for password updates. Please use /updateMyPassword.",
+        400
+      )
+    );
+  }
+
+  // 2) Оновити дані користувача
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user.id,
+    { name: req.body.name, email: req.body.email },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  res.status(200).json({
+    status: "success",
+    data: {
+      user: updatedUser,
+    },
+  });
+});
