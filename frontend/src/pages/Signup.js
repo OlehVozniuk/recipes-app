@@ -28,8 +28,8 @@ const Signup = () => {
 
       const data = await res.json();
 
-      if (data.token) {
-        login(data.token);
+      if (data.token && data.user) {
+        login(data.token, data.user); // ➕ передаємо user
         navigate("/");
       } else {
         setError(data.message || "Signup failed");
