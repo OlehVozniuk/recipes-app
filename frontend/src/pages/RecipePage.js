@@ -49,29 +49,29 @@ const RecipePage = () => {
 
   if (!recipe) return <p>Завантаження...</p>;
 
+  const isOwnerOrAdmin =
+    user && (user._id === recipe.user || user.role === "admin");
+
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">{recipe.name}</h1>
-        <div className="space-x-2">
-          <button
-            onClick={() => navigate(`/edit/${id}`)}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-          >
-            Редагувати
-          </button>
-          <button
-            onClick={handleDelete}
-            className={`px-4 py-2 rounded text-white ${
-              user?.role === "admin"
-                ? "bg-red-500 hover:bg-red-600"
-                : "bg-gray-400 cursor-not-allowed"
-            }`}
-            disabled={user?.role !== "admin"}
-          >
-            Видалити
-          </button>
-        </div>
+        {isOwnerOrAdmin && (
+          <div className="space-x-2">
+            <button
+              onClick={() => navigate(`/edit/${id}`)}
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+            >
+              Редагувати
+            </button>
+            <button
+              onClick={handleDelete}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+            >
+              Видалити
+            </button>
+          </div>
+        )}
       </div>
 
       <img

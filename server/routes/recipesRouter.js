@@ -3,27 +3,25 @@ const router = express.Router();
 const recipeController = require("../controllers/recipeController");
 const authController = require("../controllers/authController");
 
+// Усі рецепти (тільки авторизовані бачать список)
 router
   .route("/")
   .get(authController.protect, recipeController.getAllRecipes)
   .post(authController.protect, recipeController.createRecipe);
 
+// Всі рецепти, створені поточним користувачем
+router.get(
+  "/mine",
+  authController.protect,
+  recipeController.getMyRecipes // ❗ Не забудь додати цю функцію в контролер
+);
+
+// Окремий рецепт
 router
   .route("/:id")
   .get(recipeController.getRecipe)
   .put(authController.protect, recipeController.updateRecipe)
   .patch(authController.protect, recipeController.updateRecipe)
-  .delete(
-    authController.protect,
-    authController.restrictTo("admin"),
-    recipeController.deleteRecipe
-  );
-
-// router.get("/", recipeController.getAllRecipes);
-// router.get("/:id", recipeController.getRecipe);
-// router.post("/", recipeController.createRecipe);
-// router.put("/:id", recipeController.updateRecipe);
-// router.patch("/:id", recipeController.updateRecipe);
-// router.delete("/:id", recipeController.deleteRecipe);
+  .delete(authController.protect, recipeController.deleteRecipe); // ❗ не обмежуємо тільки admin
 
 module.exports = router;

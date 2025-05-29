@@ -29,7 +29,13 @@ const RecipeSchema = new mongoose.Schema(
     },
     image: { type: String, required: [true, "A recipe must have an image"] }, // URL зображення
     createdAt: { type: Date, default: Date.now },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
+
   { versionKey: false }
 );
 
