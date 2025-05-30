@@ -12,6 +12,7 @@ const app = express();
 const recipeRouter = require("./routes/recipesRouter");
 const userRouter = require("./routes/userRouter");
 const uploadRouter = require("./routes/uploadRouter");
+const commentRoutes = require("./routes/commentRoutes");
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
@@ -46,6 +47,7 @@ app.use(xss());
 app.use("/api/recipes", recipeRouter);
 app.use("/api/upload", uploadRouter);
 app.use("/api/users", userRouter);
+app.use("/api/comments", commentRoutes);
 
 app.use("/uploads", express.static("uploads"));
 mongoose
