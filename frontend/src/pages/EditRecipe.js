@@ -85,7 +85,7 @@ const EditRecipe = () => {
             },
           }
         );
-        imageUrl = uploadRes.data.imageUrl;
+        imageUrl = uploadRes.data.url;
       }
 
       const res = await fetch(`http://localhost:5001/api/recipes/${id}`, {

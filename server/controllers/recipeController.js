@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const Recipe = require("../models/recipeModel");
+const { deleteImage } = require("./uploadController");
 
 exports.getAllRecipes = async (req, res) => {
   try {
@@ -68,16 +69,17 @@ exports.updateRecipe = async (req, res) => {
         path.basename(recipe.image)
       );
 
-      fs.unlink(oldImagePath, (err) => {
-        if (err) {
+      if (req.body.image && req.body.image !== recipe.image) {
+        try {
+          await deleteImage(recipe.image); // старе зображення з Cloudinary
+          console.log("Старе зображення з Cloudinary видалено");
+        } catch (err) {
           console.error(
             "Помилка при видаленні старого зображення:",
             err.message
           );
-        } else {
-          console.log("Старе зображення успішно видалено:", oldImagePath);
         }
-      });
+      }
     }
 
     const updatedRecipe = await Recipe.findByIdAndUpdate(
@@ -127,13 +129,15 @@ exports.deleteRecipe = async (req, res) => {
       path.basename(recipe.image)
     );
 
-    fs.unlink(imagePath, (err) => {
-      if (err) {
-        console.error("Помилка при видаленні зображення:", err.message);
-      } else {
-        console.log("Зображення успішно видалено:", imagePath);
-      }
-    });
+    try {
+      await deleteImage(recipe.image);
+      console.log("Зображення з Cloudinary успішно видалено");
+    } catch (err) {
+      console.error(
+        "Помилка при видаленні зображення з Cloudinary:",
+        err.message
+      );
+    }
 
     res.status(204).json(null);
   } catch (err) {

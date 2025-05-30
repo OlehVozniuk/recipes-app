@@ -46,7 +46,10 @@ const CreateRecipe = () => {
         }
       );
 
-      const imageUrl = uploadRes.data.imageUrl;
+      const imageUrl = uploadRes.data.url; // Отримуємо URL зображення
+      if (!imageUrl) {
+        throw new Error("Не вдалося отримати URL зображення");
+      }
 
       await axios.post(
         "http://localhost:5001/api/recipes",
