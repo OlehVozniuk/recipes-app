@@ -29,60 +29,68 @@ const Signup = () => {
       const data = await res.json();
 
       if (data.token && data.user) {
-        login(data.token, data.user); // ➕ передаємо user
+        login(data.token, data.user);
         navigate("/");
       } else {
-        setError(data.message || "Signup failed");
+        setError(data.message || "Не вдалося зареєструватися");
       }
     } catch (err) {
-      setError("Server error");
+      setError("Помилка сервера");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow rounded">
-      <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <p className="text-red-500">{error}</p>}
-        <input
-          type="text"
-          placeholder="Name"
-          className="w-full border border-gray-300 p-2 rounded"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full border border-gray-300 p-2 rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full border border-gray-300 p-2 rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          className="w-full border border-gray-300 p-2 rounded"
-          value={passwordConfirm}
-          onChange={(e) => setPasswordConfirm(e.target.value)}
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
-        >
-          Зареєструватись
-        </button>
-      </form>
+    <div className="flex justify-center items-start bg-[#fff3e0] px-4 pt-16 min-h-screen">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+          Реєстрація
+        </h2>
+
+        {error && (
+          <p className="text-red-600 text-center font-medium mb-4">{error}</p>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            type="text"
+            placeholder="Ім’я"
+            className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Пароль"
+            className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Підтвердити пароль"
+            className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition"
+          >
+            Зареєструватись
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

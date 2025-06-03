@@ -33,28 +33,38 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow rounded">
-      <h2 className="text-2xl font-bold mb-4 text-center">
-        Відновлення паролю
-      </h2>
-      {message && <p className="text-green-500">{message}</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Ваша пошта"
-          className="w-full border border-gray-300 p-2 rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-        >
-          Надіслати лінк для скидання
-        </button>
-      </form>
+    <div className="flex justify-center items-start bg-[#fff3e0] px-4 pt-16 min-h-screen">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+          Відновлення паролю
+        </h2>
+
+        {message && (
+          <p className="text-green-600 text-center font-medium mb-4">
+            {message}
+          </p>
+        )}
+        {error && (
+          <p className="text-red-600 text-center font-medium mb-4">{error}</p>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            type="email"
+            placeholder="Ваша пошта"
+            className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition"
+          >
+            Надіслати лінк для скидання
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

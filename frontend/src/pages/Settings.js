@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { FaTrashAlt } from "react-icons/fa";
 
 const Settings = () => {
   const { user, token, setUser } = useContext(AuthContext);
@@ -38,7 +39,6 @@ const Settings = () => {
 
       setUser(data.data.user);
       localStorage.setItem("user", JSON.stringify(data.data.user));
-
       setProfileMessage("Профіль успішно оновлено ✅");
     } catch (err) {
       setProfileError(err.message);
@@ -110,7 +110,6 @@ const Settings = () => {
 
       setUser(null);
       localStorage.removeItem("user");
-
       window.location.href = "/";
     } catch (err) {
       alert(err.message);
@@ -118,104 +117,134 @@ const Settings = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow rounded">
-      <h2 className="text-2xl font-bold mb-6">Налаштування профілю</h2>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-100 py-12 px-4 flex justify-center">
+      <div className="w-full max-w-2xl bg-white p-8 rounded-2xl shadow-xl">
+        <h2 className="text-3xl font-bold text-orange-600 mb-6 text-center">
+          Налаштування профілю
+        </h2>
 
-      <form onSubmit={handleProfileUpdate} className="space-y-4">
-        <div>
-          <label className="block font-semibold mb-1">Ім’я</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
-            required
-          />
-        </div>
+        <form onSubmit={handleProfileUpdate} className="space-y-4">
+          <div>
+            <label className="block font-semibold text-gray-700 mb-1">
+              Ім’я
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full border border-orange-200 p-3 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
+            />
+          </div>
 
-        <div>
-          <label className="block font-semibold mb-1">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
-            required
-          />
-        </div>
+          <div>
+            <label className="block font-semibold text-gray-700 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border border-orange-200 p-3 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          Оновити профіль
-        </button>
+          <button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-xl font-semibold transition"
+          >
+            Оновити профіль
+          </button>
 
-        {profileMessage && <p className="text-green-600">{profileMessage}</p>}
-        {profileError && <p className="text-red-600">{profileError}</p>}
-      </form>
+          {profileMessage && (
+            <p className="bg-green-100 border border-green-300 text-green-700 px-4 py-2 rounded">
+              {profileMessage}
+            </p>
+          )}
+          {profileError && (
+            <p className="bg-red-100 border border-red-300 text-red-700 px-4 py-2 rounded">
+              {profileError}
+            </p>
+          )}
+        </form>
 
-      <h3 className="text-xl font-semibold mt-8 mb-4">Змінити пароль</h3>
-
-      <form onSubmit={handlePasswordChange} className="space-y-4">
-        <div>
-          <label className="block font-semibold mb-1">Поточний пароль</label>
-          <input
-            type="password"
-            value={passwordCurrent}
-            onChange={(e) => setPasswordCurrent(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block font-semibold mb-1">Новий пароль</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block font-semibold mb-1">
-            Підтвердження нового паролю
-          </label>
-          <input
-            type="password"
-            value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
-            required
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Зберегти новий пароль
-        </button>
-
-        {passwordMessage && <p className="text-green-600">{passwordMessage}</p>}
-        {passwordError && <p className="text-red-600">{passwordError}</p>}
-      </form>
-
-      <hr className="my-6" />
-
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold mb-4 text-red-600">
-          Видалити акаунт
+        <h3 className="text-2xl font-semibold mt-10 mb-4 text-gray-800">
+          Змінити пароль
         </h3>
-        <button
-          onClick={handleDeleteAccount}
-          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-        >
-          Видалити акаунт
-        </button>
+
+        <form onSubmit={handlePasswordChange} className="space-y-4">
+          <div>
+            <label className="block font-semibold text-gray-700 mb-1">
+              Поточний пароль
+            </label>
+            <input
+              type="password"
+              value={passwordCurrent}
+              onChange={(e) => setPasswordCurrent(e.target.value)}
+              className="w-full border border-orange-200 p-3 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block font-semibold text-gray-700 mb-1">
+              Новий пароль
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full border border-orange-200 p-3 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block font-semibold text-gray-700 mb-1">
+              Підтвердження нового паролю
+            </label>
+            <input
+              type="password"
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              className="w-full border border-orange-200 p-3 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-xl font-semibold transition"
+          >
+            Зберегти новий пароль
+          </button>
+
+          {passwordMessage && (
+            <p className="bg-green-100 border border-green-300 text-green-700 px-4 py-2 rounded">
+              {passwordMessage}
+            </p>
+          )}
+          {passwordError && (
+            <p className="bg-red-100 border border-red-300 text-red-700 px-4 py-2 rounded">
+              {passwordError}
+            </p>
+          )}
+        </form>
+
+        <hr className="my-10 border-orange-200" />
+
+        <div className="text-center">
+          <h3 className="text-xl font-semibold text-red-600 mb-4">
+            Видалити акаунт
+          </h3>
+          <button
+            onClick={handleDeleteAccount}
+            className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-xl font-semibold transition"
+          >
+            <FaTrashAlt /> Видалити акаунт
+          </button>
+        </div>
       </div>
     </div>
   );

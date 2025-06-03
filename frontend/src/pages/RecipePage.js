@@ -170,7 +170,8 @@ const RecipePage = () => {
     }
   };
 
-  if (!recipe) return <p>Завантаження...</p>;
+  if (!recipe)
+    return <p className="text-center mt-8 text-gray-500">Завантаження...</p>;
 
   const isOwnerOrAdmin =
     user && (user._id === recipe.user || user.role === "admin");
@@ -181,149 +182,176 @@ const RecipePage = () => {
       : 0;
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">{recipe.name}</h1>
-        {isOwnerOrAdmin && (
-          <div className="space-x-2">
-            <button
-              onClick={() => navigate(`/edit/${id}`)}
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-            >
-              Редагувати
-            </button>
-            <button
-              onClick={handleDeleteRecipe}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-            >
-              Видалити
-            </button>
-          </div>
-        )}
-      </div>
+    <div className="min-h-screen bg-orange-50 p-6 flex justify-center">
+      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-lg p-8">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-4xl font-bold text-orange-700">{recipe.name}</h1>
+          {isOwnerOrAdmin && (
+            <div className="space-x-3">
+              <button
+                onClick={() => navigate(`/edit/${id}`)}
+                className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg shadow-md transition"
+              >
+                Редагувати
+              </button>
+              <button
+                onClick={handleDeleteRecipe}
+                className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg shadow-md transition"
+              >
+                Видалити
+              </button>
+            </div>
+          )}
+        </div>
 
-      <img
-        src={recipe.image}
-        alt={recipe.name}
-        className="w-full h-64 object-cover rounded-lg"
-      />
-      <p className="mt-4">{recipe.description}</p>
+        <img
+          src={recipe.image}
+          alt={recipe.name}
+          className="w-full h-[450px] object-cover rounded-xl shadow mb-8"
+        />
 
-      <div className="mt-4">
-        <h2 className="text-lg font-semibold">Рейтинг:</h2>
-        <StarRating rating={averageRating} editable={false} />
-        <p className="text-sm text-gray-600 mt-1">
-          на основі {ratings.length} оцінок
+        <p className="text-lg text-gray-800 leading-relaxed mb-6">
+          {recipe.description}
         </p>
-        {user && user._id !== recipe.user && (
-          <div className="mt-2">
-            <p className="text-sm font-semibold mb-1">Ваша оцінка:</p>
-            <StarRating
-              rating={userRating || 0}
-              editable={true}
-              onRate={handleRate}
-            />
-          </div>
-        )}
+
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold text-orange-600 mb-2">
+            Рейтинг
+          </h2>
+          <StarRating rating={averageRating} editable={false} />
+          <p className="text-sm text-gray-600 mt-1">
+            на основі {ratings.length} оцінок
+          </p>
+          {user && user._id !== recipe.user && (
+            <div className="mt-3">
+              <p className="text-sm font-semibold mb-1">Ваша оцінка:</p>
+              <StarRating
+                rating={userRating || 0}
+                editable={true}
+                onRate={handleRate}
+              />
+            </div>
+          )}
+        </section>
+
+        <div className="grid md:grid-cols-2 gap-10 mb-12">
+          <section>
+            <h2 className="text-xl font-semibold text-orange-600 mb-3">
+              Інгредієнти
+            </h2>
+            <ul className="list-disc list-inside text-gray-700 space-y-1">
+              {recipe.ingredients.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-orange-600 mb-3">
+              Інструкції
+            </h2>
+            <p className="text-gray-700 whitespace-pre-line">
+              {recipe.instructions}
+            </p>
+          </section>
+        </div>
+
+        <section>
+          <h2 className="text-xl font-semibold text-orange-600 mb-4">
+            Коментарі
+          </h2>
+          <ul className="space-y-3">
+            {comments.map((comment) => {
+              const canEdit =
+                user &&
+                (user._id === comment.user?._id || user.role === "admin");
+              const isEditing = editingCommentId === comment._id;
+
+              return (
+                <li
+                  key={comment._id}
+                  className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 relative"
+                >
+                  <p className="text-sm font-semibold text-gray-700 mb-1">
+                    {comment.user?.name || "Користувач"}
+                  </p>
+
+                  {isEditing ? (
+                    <>
+                      <textarea
+                        value={editedText}
+                        onChange={(e) => setEditedText(e.target.value)}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        rows={2}
+                      />
+                      <div className="flex gap-3 mt-3">
+                        <button
+                          className="bg-blue-600 text-white px-4 py-1 rounded-md hover:bg-blue-700 transition"
+                          onClick={() => handleEditComment(comment._id)}
+                        >
+                          Зберегти
+                        </button>
+                        <button
+                          className="bg-gray-300 text-gray-700 px-4 py-1 rounded-md hover:bg-gray-400 transition"
+                          onClick={() => {
+                            setEditingCommentId(null);
+                            setEditedText("");
+                          }}
+                        >
+                          Скасувати
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-gray-800">{comment.text}</p>
+                  )}
+
+                  {canEdit && !isEditing && (
+                    <div className="flex gap-4 mt-3 text-sm absolute right-4 bottom-4">
+                      <button
+                        className="text-blue-600 hover:underline"
+                        onClick={() => {
+                          setEditingCommentId(comment._id);
+                          setEditedText(comment.text);
+                        }}
+                      >
+                        Редагувати
+                      </button>
+                      <button
+                        className="text-red-600 hover:underline"
+                        onClick={() => handleDeleteComment(comment._id)}
+                      >
+                        Видалити
+                      </button>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+
+          {user && (
+            <form
+              onSubmit={handleCommentSubmit}
+              className="mt-6 flex flex-col gap-3"
+            >
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                placeholder="Залишити коментар..."
+                rows="3"
+              ></textarea>
+              <button
+                type="submit"
+                className="self-end bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md shadow-md transition"
+              >
+                Надіслати
+              </button>
+            </form>
+          )}
+        </section>
       </div>
-
-      <h2 className="text-lg font-semibold mt-6">Інгредієнти:</h2>
-      <ul className="list-disc list-inside">
-        {recipe.ingredients.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
-
-      <h2 className="text-lg font-semibold mt-6">Інструкції:</h2>
-      <p>{recipe.instructions}</p>
-
-      <h2 className="text-lg font-semibold mt-8">Коментарі:</h2>
-      <ul className="space-y-2 mt-2">
-        {comments.map((comment) => {
-          const canEdit =
-            user && (user._id === comment.user?._id || user.role === "admin");
-          const isEditing = editingCommentId === comment._id;
-
-          return (
-            <li key={comment._id} className="bg-gray-100 p-3 rounded relative">
-              <p className="text-sm text-gray-600 mb-1">
-                {comment.user?.name || "Користувач"}
-              </p>
-
-              {isEditing ? (
-                <>
-                  <textarea
-                    value={editedText}
-                    onChange={(e) => setEditedText(e.target.value)}
-                    className="w-full p-2 border rounded"
-                    rows={2}
-                  />
-                  <div className="flex gap-2 mt-2">
-                    <button
-                      className="text-white bg-blue-500 px-3 py-1 rounded"
-                      onClick={() => handleEditComment(comment._id)}
-                    >
-                      Зберегти
-                    </button>
-                    <button
-                      className="text-gray-600 bg-gray-200 px-3 py-1 rounded"
-                      onClick={() => {
-                        setEditingCommentId(null);
-                        setEditedText("");
-                      }}
-                    >
-                      Скасувати
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <p>{comment.text}</p>
-              )}
-
-              {canEdit && !isEditing && (
-                <div className="flex gap-2 mt-2 text-sm">
-                  <button
-                    className="text-blue-500"
-                    onClick={() => {
-                      setEditingCommentId(comment._id);
-                      setEditedText(comment.text);
-                    }}
-                  >
-                    Редагувати
-                  </button>
-                  <button
-                    className="text-red-500"
-                    onClick={() => handleDeleteComment(comment._id)}
-                  >
-                    Видалити
-                  </button>
-                </div>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-
-      {user && (
-        <form
-          onSubmit={handleCommentSubmit}
-          className="mt-6 flex flex-col gap-2"
-        >
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            className="border p-2 rounded"
-            placeholder="Залишити коментар..."
-            rows="3"
-          ></textarea>
-          <button
-            type="submit"
-            className="self-end bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            Надіслати
-          </button>
-        </form>
-      )}
     </div>
   );
 };

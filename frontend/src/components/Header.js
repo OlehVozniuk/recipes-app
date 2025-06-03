@@ -90,15 +90,7 @@ const Header = () => {
                   >
                     Налаштування
                   </Link>
-                  <button
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                    onClick={() => {
-                      setDropdownOpen(false);
-                      // Тут можеш додати логіку зміни мови
-                    }}
-                  >
-                    Українською 🇺🇦
-                  </button>
+
                   <button
                     className="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-500 font-semibold"
                     onClick={handleLogout}
