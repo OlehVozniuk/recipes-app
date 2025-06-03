@@ -1,5 +1,4 @@
 const path = require("path");
-const fs = require("fs");
 const Recipe = require("../models/recipeModel");
 const { deleteImage } = require("./uploadController");
 const Rating = require("../models/ratingModel");
