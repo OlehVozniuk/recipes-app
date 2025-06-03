@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import StarRating from "../components/StarRating";
 
 const RecipePage = () => {
   const { id } = useParams();
@@ -10,27 +11,62 @@ const RecipePage = () => {
   const [newComment, setNewComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editedText, setEditedText] = useState("");
+  const [ratings, setRatings] = useState([]);
+  const [userRating, setUserRating] = useState(null);
   const { token, user } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchRecipeAndComments = async () => {
+    const fetchData = async () => {
       try {
-        const [recipeRes, commentsRes] = await Promise.all([
+        const [recipeRes, commentsRes, ratingsRes] = await Promise.all([
           fetch(`http://localhost:5001/api/recipes/${id}`),
           fetch(`http://localhost:5001/api/comments/recipe/${id}`),
+          fetch(`http://localhost:5001/api/ratings/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
+
         const recipeData = await recipeRes.json();
         const commentsData = await commentsRes.json();
+        const ratingsData = await ratingsRes.json();
 
         setRecipe(recipeData);
         setComments(commentsData);
+        setRatings(ratingsData);
+
+        if (user) {
+          const existing = ratingsData.find((r) => r.user === user._id);
+          setUserRating(existing?.rating || null);
+        }
       } catch (err) {
         console.error("Error fetching data:", err);
       }
     };
 
-    fetchRecipeAndComments();
-  }, [id]);
+    fetchData();
+  }, [id, token, user]);
+
+  const handleRate = async (rating) => {
+    try {
+      const res = await fetch("http://localhost:5001/api/ratings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ recipeId: id, rating }),
+      });
+
+      if (!res.ok) throw new Error("Failed to submit rating");
+
+      const updated = await res.json();
+      const newRatings = ratings.filter((r) => r.user !== user._id);
+      setRatings([...newRatings, updated]);
+      setUserRating(rating);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleDeleteRecipe = async () => {
     if (!window.confirm("Ви точно хочете видалити цей рецепт?")) return;
@@ -139,6 +175,11 @@ const RecipePage = () => {
   const isOwnerOrAdmin =
     user && (user._id === recipe.user || user.role === "admin");
 
+  const averageRating =
+    ratings.length > 0
+      ? ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length
+      : 0;
+
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <div className="flex justify-between items-center mb-4">
@@ -167,6 +208,24 @@ const RecipePage = () => {
         className="w-full h-64 object-cover rounded-lg"
       />
       <p className="mt-4">{recipe.description}</p>
+
+      <div className="mt-4">
+        <h2 className="text-lg font-semibold">Рейтинг:</h2>
+        <StarRating rating={averageRating} editable={false} />
+        <p className="text-sm text-gray-600 mt-1">
+          на основі {ratings.length} оцінок
+        </p>
+        {user && user._id !== recipe.user && (
+          <div className="mt-2">
+            <p className="text-sm font-semibold mb-1">Ваша оцінка:</p>
+            <StarRating
+              rating={userRating || 0}
+              editable={true}
+              onRate={handleRate}
+            />
+          </div>
+        )}
+      </div>
 
       <h2 className="text-lg font-semibold mt-6">Інгредієнти:</h2>
       <ul className="list-disc list-inside">

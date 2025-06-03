@@ -13,6 +13,7 @@ const recipeRouter = require("./routes/recipesRouter");
 const userRouter = require("./routes/userRouter");
 const uploadRouter = require("./routes/uploadRouter");
 const commentRoutes = require("./routes/commentRoutes");
+const ratingRoutes = require("./routes/ratingRouter");
 
 app.use(
   helmet({
@@ -49,6 +50,7 @@ app.use("/api/recipes", recipeRouter);
 app.use("/api/upload", uploadRouter);
 app.use("/api/users", userRouter);
 app.use("/api/comments", commentRoutes);
+app.use("/api/ratings", ratingRoutes);
 
 app.use("/uploads", express.static("uploads"));
 mongoose
