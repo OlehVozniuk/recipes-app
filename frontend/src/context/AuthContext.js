@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // <--- стан завантаження
 
   useEffect(() => {
     try {
@@ -18,7 +19,6 @@ export const AuthProvider = ({ children }) => {
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
 
-        // Додатковий захист: перевіряємо, що parsedUser — об'єкт
         if (parsedUser && typeof parsedUser === "object") {
           setUser(parsedUser);
         } else {
@@ -29,6 +29,8 @@ export const AuthProvider = ({ children }) => {
       console.error("❌ AuthContext: помилка при читанні з localStorage:", err);
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+    } finally {
+      setIsLoading(false); // <--- ініціалізація завершена
     }
   }, []);
 
@@ -46,12 +48,17 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
+  // Поки ініціалізація — показуємо пустий екран або лоадер
+  if (isLoading) {
+    return <div>Завантаження...</div>;
+  }
+
   return (
     <AuthContext.Provider
       value={{
         token,
         user,
-        setUser, // 👈 додано сюди
+        setUser,
         login,
         logout,
       }}

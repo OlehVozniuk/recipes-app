@@ -34,6 +34,10 @@ const RecipeSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
   },
 
   { versionKey: false }
