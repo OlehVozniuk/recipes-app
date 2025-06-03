@@ -24,7 +24,7 @@ const ImageUploader = ({ onUpload }) => {
         }
       );
 
-      const imageUrl = res.data.imageUrl;
+      const imageUrl = res.data.url; // Отримуємо URL зображення
       onUpload(imageUrl); // Передаємо url назад у форму
     } catch (err) {
       console.error("Upload error:", err);

@@ -2,12 +2,48 @@ const path = require("path");
 const fs = require("fs");
 const Recipe = require("../models/recipeModel");
 const { deleteImage } = require("./uploadController");
+const Rating = require("../models/ratingModel");
 
 exports.getAllRecipes = async (req, res) => {
   try {
-    const recipes = await Recipe.find();
+    const { search, sortBy } = req.query;
+
+    // Пошук за назвою
+    let filter = {};
+    if (search) {
+      filter.name = { $regex: search, $options: "i" };
+    }
+    let recipes = await Recipe.find(filter);
+
+    // Сортування
+    if (sortBy === "date") {
+      recipes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    } else if (sortBy === "rating") {
+      // Отримуємо рейтинги
+      const ratings = await Rating.aggregate([
+        {
+          $group: {
+            _id: "$recipe",
+            avgRating: { $avg: "$rating" },
+          },
+        },
+      ]);
+
+      const ratingMap = {};
+      ratings.forEach((r) => {
+        ratingMap[r._id.toString()] = r.avgRating;
+      });
+
+      recipes.sort((a, b) => {
+        const rA = ratingMap[a._id.toString()] || 0;
+        const rB = ratingMap[b._id.toString()] || 0;
+        return rB - rA;
+      });
+    }
+
     res.status(200).json(recipes);
   } catch (err) {
+    console.error("Помилка при отриманні рецептів:", err);
     res.status(500).json({ status: "fail", message: err.message });
   }
 };
