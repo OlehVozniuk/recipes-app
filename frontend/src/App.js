@@ -6,12 +6,12 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import EditRecipe from "./pages/EditRecipe";
 import About from "./pages/About";
-import { AuthProvider } from "./context/AuthContext"; // додай це
-import Login from "./pages/Login"; // майбутні сторінки
+import { AuthProvider } from "./context/AuthContext";
+import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import Profile from "./pages/Profile"; // сторінка профілю
+import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 
 const App = () => {

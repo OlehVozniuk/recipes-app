@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // <--- стан завантаження
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     try {
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     } finally {
-      setIsLoading(false); // <--- ініціалізація завершена
+      setIsLoading(false);
     }
   }, []);
 
@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
   };
 
-  // Поки ініціалізація — показуємо пустий екран або лоадер
   if (isLoading) {
     return <div>Завантаження...</div>;
   }

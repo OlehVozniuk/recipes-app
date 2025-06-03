@@ -17,6 +17,11 @@ c. Cover an image et cetera ✅
 9. FIXME: handle and write errors tokens
 10. FIXME: create login in postman with not hidden token
 11. TODO: implement change password after in user auth
+
+12. Update readme files
+13. remove console.logs
+14. Renew requests limiter in index.js
+15. Split index and server
 //Permanent
 MAIN IDEA
 1.To make authentication

@@ -4,7 +4,6 @@ const { uploadImage } = require("../controllers/uploadController");
 
 const router = express.Router();
 
-// ✅ Правильне зберігання — в памʼяті
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 

@@ -39,7 +39,6 @@ exports.deleteComment = async (req, res) => {
         .json({ status: "fail", message: "Коментар не знайдено" });
     }
 
-    // Перевірка: або автор коментаря, або адмін
     if (
       comment.user.toString() !== req.user._id.toString() &&
       req.user.role !== "admin"

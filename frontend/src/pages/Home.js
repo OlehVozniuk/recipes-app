@@ -74,7 +74,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 via-orange-100 to-orange-200 p-6">
-      {/* 🔍 Пошук і фільтр */}
+      {/* Пошук і фільтр */}
       <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 mb-10">
         <div className="relative w-full sm:w-2/3">
           <svg

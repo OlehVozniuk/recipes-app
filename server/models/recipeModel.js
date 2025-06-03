@@ -27,7 +27,7 @@ const RecipeSchema = new mongoose.Schema(
       type: String,
       required: [true, "A recipe must have instructions"],
     },
-    image: { type: String, required: [true, "A recipe must have an image"] }, // URL зображення
+    image: { type: String, required: [true, "A recipe must have an image"] },
     createdAt: { type: Date, default: Date.now },
     user: {
       type: mongoose.Schema.Types.ObjectId,

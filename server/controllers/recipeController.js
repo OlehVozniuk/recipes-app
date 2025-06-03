@@ -7,18 +7,15 @@ exports.getAllRecipes = async (req, res) => {
   try {
     const { search, sortBy } = req.query;
 
-    // Пошук за назвою
     let filter = {};
     if (search) {
       filter.name = { $regex: search, $options: "i" };
     }
     let recipes = await Recipe.find(filter);
 
-    // Сортування
     if (sortBy === "date") {
       recipes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     } else if (sortBy === "rating") {
-      // Отримуємо рейтинги
       const ratings = await Rating.aggregate([
         {
           $group: {
@@ -65,7 +62,7 @@ exports.createRecipe = async (req, res) => {
   try {
     const newRecipe = await Recipe.create({
       ...req.body,
-      user: req.user._id, // прив’язка до автора
+      user: req.user._id,
     });
     res.status(201).json(newRecipe);
   } catch (err) {
@@ -83,7 +80,6 @@ exports.updateRecipe = async (req, res) => {
         .json({ status: "fail", message: "Рецепт не знайдено" });
     }
 
-    // ⛔ Перевірка прав (автор або адмін)
     if (
       !recipe.user ||
       (recipe.user.toString() !== req.user._id.toString() &&
@@ -95,7 +91,6 @@ exports.updateRecipe = async (req, res) => {
       });
     }
 
-    // Якщо передали нову картинку — видаляємо стару
     if (req.body.image && req.body.image !== recipe.image) {
       const oldImagePath = path.join(
         __dirname,
@@ -106,7 +101,7 @@ exports.updateRecipe = async (req, res) => {
 
       if (req.body.image && req.body.image !== recipe.image) {
         try {
-          await deleteImage(recipe.image); // старе зображення з Cloudinary
+          await deleteImage(recipe.image);
           console.log("Старе зображення з Cloudinary видалено");
         } catch (err) {
           console.error(
@@ -142,7 +137,6 @@ exports.deleteRecipe = async (req, res) => {
         .json({ status: "fail", message: "Рецепт не знайдено" });
     }
 
-    // ⛔ Перевірка прав (автор або адмін)
     if (
       !recipe.user ||
       (recipe.user.toString() !== req.user._id.toString() &&
@@ -156,7 +150,6 @@ exports.deleteRecipe = async (req, res) => {
 
     await recipe.deleteOne();
 
-    // Видалення картинки з сервера
     const imagePath = path.join(
       __dirname,
       "..",
