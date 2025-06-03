@@ -42,15 +42,15 @@ const Header = () => {
               to="/recipes/new"
               className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-xl transition duration-200"
             >
-              + Add Recipe
+              + Додати рецепт
             </Link>
           )}
 
           <Link to="/" className="hover:underline">
-            Home
+            Головна
           </Link>
           <Link to="/about" className="hover:underline">
-            About
+            Про нас
           </Link>
 
           {token ? (
