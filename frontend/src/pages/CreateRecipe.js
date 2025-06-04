@@ -40,7 +40,7 @@ const CreateRecipe = () => {
       imageData.append("image", form.image);
 
       const uploadRes = await axios.post(
-        `${process.env.REACT_APP_API_URLL}/api/upload`,
+        `${process.env.REACT_APP_API_URL}/api/upload`,
         imageData,
         {
           headers: {

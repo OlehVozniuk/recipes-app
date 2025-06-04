@@ -80,7 +80,7 @@ const Login = () => {
               Забули пароль?
             </Link>
             <a
-              href="http://localhost:3000/signup"
+              href={`${process.env.REACT_APP_API_URL}/signup`}
               className="text-orange-600 hover:underline"
             >
               Зареєструватися
