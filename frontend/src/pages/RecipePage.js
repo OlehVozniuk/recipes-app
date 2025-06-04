@@ -19,9 +19,11 @@ const RecipePage = () => {
     const fetchData = async () => {
       try {
         const [recipeRes, commentsRes, ratingsRes] = await Promise.all([
-          fetch(`${import.meta.env.VITE_API_URL}/api/recipes/${id}`),
-          fetch(`${import.meta.env.VITE_API_URL}/api/comments/recipe/${id}`),
-          fetch(`${import.meta.env.VITE_API_URL}/api/ratings/${id}`, {
+          fetch(`${import.meta.env.REACT_APP_API_URL}/api/recipes/${id}`),
+          fetch(
+            `${import.meta.env.REACT_APP_API_URL}/api/comments/recipe/${id}`
+          ),
+          fetch(`${import.meta.env.REACT_APP_API_URL}/api/ratings/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -48,14 +50,17 @@ const RecipePage = () => {
 
   const handleRate = async (rating) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/ratings`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ recipeId: id, rating }),
-      });
+      const res = await fetch(
+        `${import.meta.env.REACT_APP_API_URL}/api/ratings`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ recipeId: id, rating }),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to submit rating");
 
@@ -73,7 +78,7 @@ const RecipePage = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/recipes/${id}`,
+        `${import.meta.env.REACT_APP_API_URL}/api/recipes/${id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -101,14 +106,17 @@ const RecipePage = () => {
     if (!newComment.trim()) return;
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/comments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ text: newComment, recipeId: id }),
-      });
+      const res = await fetch(
+        `${import.meta.env.REACT_APP_API_URL}/api/comments`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ text: newComment, recipeId: id }),
+        }
+      );
 
       if (!res.ok) throw new Error("Помилка при надсиланні коментаря");
 
@@ -128,7 +136,7 @@ const RecipePage = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/comments/${commentId}`,
+        `${import.meta.env.REACT_APP_API_URL}/api/comments/${commentId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -148,7 +156,7 @@ const RecipePage = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/comments/${commentId}`,
+        `${import.meta.env.REACT_APP_API_URL}/api/comments/${commentId}`,
         {
           method: "PATCH",
           headers: {

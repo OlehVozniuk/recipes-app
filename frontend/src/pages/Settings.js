@@ -23,7 +23,7 @@ const Settings = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/updateMe`,
+        `${import.meta.env.REACT_APP_API_URL}/api/users/updateMe`,
         {
           method: "PATCH",
           headers: {
@@ -60,7 +60,7 @@ const Settings = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/updateMyPassword`,
+        `${import.meta.env.REACT_APP_API_URL}/api/users/updateMyPassword`,
         {
           method: "PATCH",
           headers: {
@@ -100,7 +100,7 @@ const Settings = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/deleteMe`,
+        `${import.meta.env.REACT_APP_API_URL}/api/users/deleteMe`,
         {
           method: "DELETE",
           headers: {

@@ -12,7 +12,7 @@ const ForgotPassword = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/forgotPassword`,
+        `${import.meta.env.REACT_APP_API_URL}/api/users/forgotPassword`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

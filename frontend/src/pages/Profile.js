@@ -24,7 +24,7 @@ const Profile = () => {
         setLoadingRecipes(true);
         // Запитуємо рецепти, створені поточним користувачем
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/recipes/mine`,
+          `${import.meta.env.REACT_APP_API_URL}/api/recipes/mine`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -45,9 +45,12 @@ const Profile = () => {
 
         // Запитуємо рейтинги для цих рецептів
         const ratingPromises = data.map((recipe) =>
-          fetch(`${import.meta.env.VITE_API_URL}/api/ratings/${recipe._id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }).then((res) => res.json())
+          fetch(
+            `${import.meta.env.REACT_APP_API_URL}/api/ratings/${recipe._id}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          ).then((res) => res.json())
         );
 
         const ratingsData = await Promise.all(ratingPromises);

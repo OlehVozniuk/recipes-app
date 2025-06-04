@@ -17,7 +17,7 @@ const ImageUploader = ({ onUpload }) => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/upload`,
+        `${import.meta.env.REACT_APP_API_URL}/api/upload`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

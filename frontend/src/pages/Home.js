@@ -26,7 +26,7 @@ const Home = () => {
 
         const res = await fetch(
           `${
-            import.meta.env.VITE_API_URL
+            import.meta.env.REACT_APP_API_URL
           }/api/recipes?${queryParams.toString()}`,
           {
             headers: {
@@ -47,9 +47,12 @@ const Home = () => {
         setRecipes(data);
 
         const ratingPromises = data.map((recipe) =>
-          fetch(`${import.meta.env.VITE_API_URL}/api/ratings/${recipe._id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }).then((res) => res.json())
+          fetch(
+            `${import.meta.env.REACT_APP_API_URL}/api/ratings/${recipe._id}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          ).then((res) => res.json())
         );
 
         const ratingsData = await Promise.all(ratingPromises);

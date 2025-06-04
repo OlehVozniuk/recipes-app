@@ -14,7 +14,7 @@ const Login = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/login`,
+        `${import.meta.env.REACT_APP_API_URL}/api/users/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -22,7 +22,7 @@ const EditRecipe = () => {
     const fetchRecipe = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/recipes/${id}`,
+          `${import.meta.env.REACT_APP_API_URL}/api/recipes/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -75,7 +75,7 @@ const EditRecipe = () => {
         const formData = new FormData();
         formData.append("image", newImage);
         const uploadRes = await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/upload`,
+          `${import.meta.env.REACT_APP_API_URL}/api/upload`,
           formData,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -84,14 +84,17 @@ const EditRecipe = () => {
         imageUrl = uploadRes.data.url;
       }
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/recipes/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ ...recipe, image: imageUrl }),
-      });
+      const res = await fetch(
+        `${import.meta.env.REACT_APP_API_URL}/api/recipes/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ ...recipe, image: imageUrl }),
+        }
+      );
 
       if (res.ok) {
         alert("Рецепт оновлено!");
