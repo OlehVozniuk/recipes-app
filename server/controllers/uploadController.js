@@ -3,13 +3,10 @@ const cloudinary = require("../utils/cloudinary");
 exports.uploadImage = async (req, res) => {
   try {
     if (!req.file) {
-      console.log("Файл не передано");
       return res.status(400).json({ message: "Файл не передано" });
     }
 
     const file = req.file;
-
-    console.log("Файл прийнято:", file.originalname);
 
     const base64 = file.buffer.toString("base64");
     const dataURI = `data:${file.mimetype};base64,${base64}`;

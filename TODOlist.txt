@@ -12,11 +12,11 @@ b. Char validation ✅
 c. Cover an image et cetera ✅
 6. Set ingridients ✅
 --------------------------------------------------------
-7. FIXME: bug when validation of recipe is denied but img upload anyway on server
+7. FIXME: bug when validation of recipe is denied but img upload anyway on server ✅
 8. FIXED: with ingridients when creating new recipe✅
-9. FIXME: handle and write errors tokens
-10. FIXME: create login in postman with not hidden token
-11. TODO: implement change password after in user auth
+9. FIXME: handle and write errors tokens ✅
+10. FIXME: create login in postman with not hidden token ✅
+11. TODO: implement change password after in user auth ✅
 
 12. Update readme files
 13. remove console.logs
@@ -24,7 +24,7 @@ c. Cover an image et cetera ✅
 15. Split index and server
 //Permanent
 MAIN IDEA
-1.To make authentication
-2.Security
-3.Maybe texting and left comments under the recipes
+1.To make authentication ✅
+2.Security ✅
+3.Maybe texting and left comments under the recipes ✅
 4.Deploy whole project

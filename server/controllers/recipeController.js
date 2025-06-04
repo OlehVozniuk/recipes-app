@@ -102,7 +102,6 @@ exports.updateRecipe = async (req, res) => {
       if (req.body.image && req.body.image !== recipe.image) {
         try {
           await deleteImage(recipe.image);
-          console.log("Старе зображення з Cloudinary видалено");
         } catch (err) {
           console.error(
             "Помилка при видаленні старого зображення:",
@@ -159,7 +158,6 @@ exports.deleteRecipe = async (req, res) => {
 
     try {
       await deleteImage(recipe.image);
-      console.log("Зображення з Cloudinary успішно видалено");
     } catch (err) {
       console.error(
         "Помилка при видаленні зображення з Cloudinary:",
