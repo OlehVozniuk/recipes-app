@@ -21,9 +21,12 @@ const EditRecipe = () => {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const res = await fetch(`http://localhost:5001/api/recipes/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/recipes/${id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         if (!res.ok) {
           if (res.status === 401) {
             navigate("/login");
@@ -72,7 +75,7 @@ const EditRecipe = () => {
         const formData = new FormData();
         formData.append("image", newImage);
         const uploadRes = await axios.post(
-          "http://localhost:5001/api/upload",
+          `${import.meta.env.VITE_API_URL}/api/upload`,
           formData,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -81,7 +84,7 @@ const EditRecipe = () => {
         imageUrl = uploadRes.data.url;
       }
 
-      const res = await fetch(`http://localhost:5001/api/recipes/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/recipes/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

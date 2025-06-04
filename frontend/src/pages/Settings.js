@@ -22,14 +22,17 @@ const Settings = () => {
     setProfileError(null);
 
     try {
-      const res = await fetch("http://localhost:5001/api/users/updateMe", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name, email }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/updateMe`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ name, email }),
+        }
+      );
 
       const data = await res.json();
 
@@ -57,7 +60,7 @@ const Settings = () => {
 
     try {
       const res = await fetch(
-        "http://localhost:5001/api/users/updateMyPassword",
+        `${import.meta.env.VITE_API_URL}/api/users/updateMyPassword`,
         {
           method: "PATCH",
           headers: {
@@ -96,12 +99,15 @@ const Settings = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch("http://localhost:5001/api/users/deleteMe", {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/deleteMe`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!res.ok) {
         const data = await res.json();

@@ -23,11 +23,14 @@ const Profile = () => {
       try {
         setLoadingRecipes(true);
         // Запитуємо рецепти, створені поточним користувачем
-        const res = await fetch("http://localhost:5001/api/recipes/mine", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/recipes/mine`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!res.ok) {
           if (res.status === 401) {
@@ -42,7 +45,7 @@ const Profile = () => {
 
         // Запитуємо рейтинги для цих рецептів
         const ratingPromises = data.map((recipe) =>
-          fetch(`http://localhost:5001/api/ratings/${recipe._id}`, {
+          fetch(`${import.meta.env.VITE_API_URL}/api/ratings/${recipe._id}`, {
             headers: { Authorization: `Bearer ${token}` },
           }).then((res) => res.json())
         );

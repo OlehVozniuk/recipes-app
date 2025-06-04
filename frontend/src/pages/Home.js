@@ -25,7 +25,9 @@ const Home = () => {
         if (sortBy) queryParams.append("sortBy", sortBy);
 
         const res = await fetch(
-          `http://localhost:5001/api/recipes?${queryParams.toString()}`,
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/recipes?${queryParams.toString()}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -45,7 +47,7 @@ const Home = () => {
         setRecipes(data);
 
         const ratingPromises = data.map((recipe) =>
-          fetch(`http://localhost:5001/api/ratings/${recipe._id}`, {
+          fetch(`${import.meta.env.VITE_API_URL}/api/ratings/${recipe._id}`, {
             headers: { Authorization: `Bearer ${token}` },
           }).then((res) => res.json())
         );

@@ -40,7 +40,7 @@ const CreateRecipe = () => {
       imageData.append("image", form.image);
 
       const uploadRes = await axios.post(
-        "http://localhost:5001/api/upload",
+        `${import.meta.env.VITE_API_URL}/api/upload`,
         imageData,
         {
           headers: {
@@ -53,7 +53,7 @@ const CreateRecipe = () => {
       if (!imageUrl) throw new Error("Не вдалося отримати URL зображення");
 
       await axios.post(
-        "http://localhost:5001/api/recipes",
+        `${import.meta.env.VITE_API_URL}/api/recipes`,
         { ...form, image: imageUrl },
         {
           headers: {

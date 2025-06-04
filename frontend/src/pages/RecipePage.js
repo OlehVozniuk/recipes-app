@@ -19,9 +19,9 @@ const RecipePage = () => {
     const fetchData = async () => {
       try {
         const [recipeRes, commentsRes, ratingsRes] = await Promise.all([
-          fetch(`http://localhost:5001/api/recipes/${id}`),
-          fetch(`http://localhost:5001/api/comments/recipe/${id}`),
-          fetch(`http://localhost:5001/api/ratings/${id}`, {
+          fetch(`${import.meta.env.VITE_API_URL}/api/recipes/${id}`),
+          fetch(`${import.meta.env.VITE_API_URL}/api/comments/recipe/${id}`),
+          fetch(`${import.meta.env.VITE_API_URL}/api/ratings/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -48,7 +48,7 @@ const RecipePage = () => {
 
   const handleRate = async (rating) => {
     try {
-      const res = await fetch("http://localhost:5001/api/ratings", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/ratings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -72,10 +72,13 @@ const RecipePage = () => {
     if (!window.confirm("Ви точно хочете видалити цей рецепт?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5001/api/recipes/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/recipes/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       if (res.status === 403) {
         alert("У вас немає прав для видалення цього рецепта!");
@@ -98,7 +101,7 @@ const RecipePage = () => {
     if (!newComment.trim()) return;
 
     try {
-      const res = await fetch("http://localhost:5001/api/comments", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +128,7 @@ const RecipePage = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/comments/${commentId}`,
+        `${import.meta.env.VITE_API_URL}/api/comments/${commentId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -145,7 +148,7 @@ const RecipePage = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/comments/${commentId}`,
+        `${import.meta.env.VITE_API_URL}/api/comments/${commentId}`,
         {
           method: "PATCH",
           headers: {
