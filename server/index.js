@@ -53,7 +53,6 @@ app.use("/api/users", userRouter);
 app.use("/api/comments", commentRoutes);
 app.use("/api/ratings", ratingRoutes);
 
-app.use("/uploads", express.static("uploads"));
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,

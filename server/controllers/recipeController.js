@@ -92,22 +92,10 @@ exports.updateRecipe = async (req, res) => {
     }
 
     if (req.body.image && req.body.image !== recipe.image) {
-      const oldImagePath = path.join(
-        __dirname,
-        "..",
-        "uploads",
-        path.basename(recipe.image)
-      );
-
-      if (req.body.image && req.body.image !== recipe.image) {
-        try {
-          await deleteImage(recipe.image);
-        } catch (err) {
-          console.error(
-            "Помилка при видаленні старого зображення:",
-            err.message
-          );
-        }
+      try {
+        await deleteImage(recipe.image);
+      } catch (err) {
+        console.error("Помилка при видаленні старого зображення:", err.message);
       }
     }
 
@@ -147,15 +135,7 @@ exports.deleteRecipe = async (req, res) => {
       });
     }
 
-    await recipe.deleteOne();
-
-    const imagePath = path.join(
-      __dirname,
-      "..",
-      "uploads",
-      path.basename(recipe.image)
-    );
-
+    // Видаляємо зображення з Cloudinary
     try {
       await deleteImage(recipe.image);
     } catch (err) {
@@ -164,6 +144,8 @@ exports.deleteRecipe = async (req, res) => {
         err.message
       );
     }
+
+    await recipe.deleteOne();
 
     res.status(204).json(null);
   } catch (err) {
