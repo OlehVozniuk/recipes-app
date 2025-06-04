@@ -22,7 +22,7 @@ const EditRecipe = () => {
     const fetchRecipe = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.REACT_APP_API_URL}/api/recipes/${id}`,
+          `${process.env.REACT_APP_API_URL}/api/recipes/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -75,7 +75,7 @@ const EditRecipe = () => {
         const formData = new FormData();
         formData.append("image", newImage);
         const uploadRes = await axios.post(
-          `${import.meta.env.REACT_APP_API_URL}/api/upload`,
+          `${process.env.REACT_APP_API_URL}/api/upload`,
           formData,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -85,7 +85,7 @@ const EditRecipe = () => {
       }
 
       const res = await fetch(
-        `${import.meta.env.REACT_APP_API_URL}/api/recipes/${id}`,
+        `${process.env.REACT_APP_API_URL}/api/recipes/${id}`,
         {
           method: "PUT",
           headers: {

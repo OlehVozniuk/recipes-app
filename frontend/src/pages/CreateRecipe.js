@@ -40,7 +40,7 @@ const CreateRecipe = () => {
       imageData.append("image", form.image);
 
       const uploadRes = await axios.post(
-        `${import.meta.env.REACT_APP_API_URL}/api/upload`,
+        `${process.env.REACT_APP_API_URLL}/api/upload`,
         imageData,
         {
           headers: {
@@ -53,7 +53,7 @@ const CreateRecipe = () => {
       if (!imageUrl) throw new Error("Не вдалося отримати URL зображення");
 
       await axios.post(
-        `${import.meta.env.REACT_APP_API_URL}/api/recipes`,
+        `${process.env.REACT_APP_API_URL}/api/recipes`,
         { ...form, image: imageUrl },
         {
           headers: {
