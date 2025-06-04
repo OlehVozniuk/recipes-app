@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === "development") {
 }
 // Rate limiting to prevent abuse
 const limiter = rateLimit({
-  max: 10000,
+  max: 1000,
   windowMs: 60 * 60 * 1000,
   message: "Too many requests from this IP, please try again in an hour!",
 });
@@ -61,6 +61,5 @@ mongoose
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// ✅ Запускаємо сервер
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
