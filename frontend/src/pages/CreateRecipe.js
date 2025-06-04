@@ -53,7 +53,7 @@ const CreateRecipe = () => {
       if (!imageUrl) throw new Error("Не вдалося отримати URL зображення");
 
       await axios.post(
-        `${import.meta.env.}/api/recipes`,
+        `${import.meta.env.REACT_APP_API_URL}/api/recipes`,
         { ...form, image: imageUrl },
         {
           headers: {
