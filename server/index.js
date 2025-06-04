@@ -22,7 +22,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [process.env.CLIENT_URL],
     methods: "GET,POST,PATCH,PUT,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -54,10 +54,7 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/ratings", ratingRoutes);
 
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI, {})
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
